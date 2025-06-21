@@ -1,0 +1,43 @@
+name: Build and Publish ASP.NET Core App
+on:
+  push:
+    branches:
+      - main # Trigger on pushes to the main branch
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+env:
+  DOTNET_VERSION: '8.0.x' # Specify your .NET SDK version
+  PROJECT_PATH: 'bala-webapp-deploy/balawebapp.csproj' # Path to your main project file (adjust if different)
+  PUBLISH_DIR: 'bala-webapp-deploy/publish' # Directory where the published output will be stored
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest # Use a fresh Ubuntu virtual environment
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore Dependencies
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build Project
+        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+
+      # - name: Run Tests (Optional)
+      #   run: dotnet test ${{ env.PROJECT_PATH }} --no-build --verbosity normal
+
+      - name: Publish Application
+        run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --output ${{ env.PUBLISH_DIR }}
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mywebapp-artifact
+          path: ${{ env.PUBLISH_DIR }}
+          retention-days: 7 # How long to keep the artifact

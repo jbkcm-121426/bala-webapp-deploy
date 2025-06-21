@@ -22,10 +22,10 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: Install SonarScanner for .NET
-        run: |
-            dotnet tool install --global dotnet-sonarscanner --version ${{ env.SONAR_SCANNER_VERSION }}
-            echo "$HOME/.dotnet/tools" >> $GITHUB_PATH # Add dotnet tools to PATH
+    #   - name: Install SonarScanner for .NET
+    #     run: |
+    #         dotnet tool install --global dotnet-sonarscanner --version ${{ env.SONAR_SCANNER_VERSION }}
+    #         echo "$HOME/.dotnet/tools" >> $GITHUB_PATH # Add dotnet tools to PATH
     #   - name: Begin SonarQube Analysis
     #     env:
     #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed for GitHub integration (e.g., PR decoration)
